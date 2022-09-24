@@ -1,33 +1,36 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./index.scss";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const count = useRef(0);
+  const [countRef, setCountRef] = useState(0);
 
   useEffect(() => {
-    setCount(Number(localStorage.getItem("count")));
+    count.current = Number(localStorage.getItem("count"));
+    setCountRef(count.current);
   }, []);
 
   const save = () => {
-    localStorage.setItem("count", `${count}`);
+    localStorage.setItem("count", `${count.current}`);
   };
 
   const increment = () => {
-    setCount(count + 1);
+    count.current = count.current + 1;
     save();
+    setCountRef(count.current);
   };
 
   const decrement = () => {
-    setCount(count - 1);
+    count.current = count.current - 1;
     save();
+    setCountRef(count.current);
   };
 
   return (
     <div className="App">
       <div>
         <h2>Счетчик:</h2>
-        <h1>{count}</h1>
+        <h1>{countRef}</h1>
         <button onClick={decrement} className="minus">
           - Минус
         </button>
